@@ -207,6 +207,15 @@ Component
   cursor: pointer;
 }
 
+.c-tabs .catlink {
+  padding: 0;
+}
+
+.c-tabs .catlink a {
+  padding: 15px 0;
+  display: block;
+}
+
 .c-tabs li + li {
   border-left: 1px solid #ccc;
 }
@@ -395,6 +404,16 @@ Component
 
 .c-listpost__info {
   width: 30%;
+  display: flex;
+}
+
+.c-listpost__info .datepost {
+  flex-shrink: 0;
+}
+
+.c-listpost__info .cats {
+  display: flex;
+  flex-direction: column;
 }
 
 .c-listpost .titlepost {
@@ -510,7 +529,7 @@ Component
   padding: 70px 0 0;
 }
 
-.c-pagination a {
+.c-pagination a, .c-pagination span {
   display: inline-block;
   width: 45px;
   line-height: 45px;
@@ -518,7 +537,7 @@ Component
   background-color: #f8f8f8;
 }
 
-.c-pagination a.current {
+.c-pagination span.current {
   color: #fff;
   background-color: #0078d2;
 }

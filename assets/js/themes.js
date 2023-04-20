@@ -10,7 +10,7 @@ $(document).ready(function(){
     });
 
     //Tabs - Tabs Content ===============
-    $('.c-tabs li').click(function(){
+    $('.c-tabs li:not(li.catlink)').click(function(){
         var item = $(this);
         var showContent = item.data('content');
         var activeColor = item.data('color');
@@ -21,8 +21,8 @@ $(document).ready(function(){
            'border-top-color' : activeColor
         });
 
-        $(".c-tabs li").not(item).removeClass("active");
-        $(".c-tabs li").not(item).css("background-color","");
+        $(".c-tabs li:not(li.catlink)").not(item).removeClass("active");
+        $(".c-tabs li:not(li.catlink)").not(item).css("background-color","");
 
         $('#'+showContent).fadeIn();
         $('.c-listpost').not('#'+showContent).hide();
