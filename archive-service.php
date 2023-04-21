@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php get_header('', array('title'=>'サービス')); ?>
 <?php 
 	$titlepage = get_post_type_object( 'service' );
 ?>
@@ -71,11 +71,10 @@
 					$args = [
 						'post_type' => 'service' , 
 						'post_status' => 'publish',
-						'paged' => 1 , 
+						'posts_per_page'=>12,
+						'paged' => 1, 
 					];
-
 					$query = new WP_Query( $args );
-
 				?>
 				<p class="p-service__result"><?php echo $total_services_post ?>件が該当しました</p>
 

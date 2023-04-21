@@ -103,10 +103,11 @@
         return $out_put.'<div class="c-pagination">'.paginate_links( $pagination_args ).'</div>';
     }
 
-    function create_post_type($singular, $plural, $description) {
+    function create_post_type($singular, $plural, $description, $slug, $all_items) {
         $label = array(
             'name'=>$plural,
-            'singular_name'=>$singular
+            'singular_name'=>$singular,
+            'all_items'=>__($all_items)
         );
 
         $args = array(
@@ -124,8 +125,9 @@
             'exclude_from_search' => false, //Loại bỏ khỏi kết quả tìm kiếm
             'publicly_queryable' => true, //Hiển thị các tham số trong query, phải đặt true
             'rewrite'=> array(
-                'slug'  => strtolower($plural),
+                'slug'  => strtolower($slug),
                 'pages' => TRUE,
+                'with_front'=> false
             )
         );
     
@@ -133,16 +135,17 @@
     };
     
     function custom_cpts() {
-        create_post_type('Service', 'Services', 'Service page');
+        create_post_type('Service', 'Services', 'Service page', 'Services', 'All Services');
+        create_post_type('Publish', 'Publishs', 'Publish page', 'Publish', 'All Publishs');
     }
     
     add_action( 'init', 'custom_cpts' );
 
-    function create_custom_taxonomy($plural, $singular, $taxonomy) {
+    function create_custom_taxonomy($plural, $singular, $taxonomy, $menu_name) {
         $labels = array(
 		'name' => $plural,
 		'singular' => $singular,
-		'menu_name' => $singular
+		'menu_name' => $menu_name
 	);
         $args = array(
             'labels'                    => $labels,
@@ -157,8 +160,14 @@
     }
 
     function custom_ccts() {
-        create_custom_taxonomy('Services', 'Service', 'service-category');
+        create_custom_taxonomy('Services', 'Service', 'service-category', 'Service Categories');
     }
 
     add_action( 'init', 'custom_ccts', 0);
+
+    function c_print_r($data) {
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+    }
 ?>
