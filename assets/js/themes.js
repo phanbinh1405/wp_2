@@ -28,4 +28,36 @@ $(document).ready(function(){
         $('.c-listpost').not('#'+showContent).hide();
     });
 
+    // Reset form ====================
+    $("input[type=reset]").click(function() {
+        $(this).closest('form').find("input[type=text], textarea").val('');
+        $(this).closest('form').find("input[type=text]").removeAttr('value');
+        $(this).closest('form').find('textarea').empty();
+      });
+
+    // Query Ajax Service
+    $('.chkbutton').click(function(){
+        var form = $('#serviceSearch')
+        var checked = []
+        form.find('input[type="checkbox"]:checked').each(function(){
+            checked.push(parseInt($(this).val()));
+        })
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: ajaxurl,
+            data: {
+                action: 'filter_service_categories',
+                input: checked
+            },
+            success: function(response) {
+                if(response.success) {
+                    alert(response.data);
+                }
+                else {
+                    alert('Đã có lỗi xảy ra');
+                }
+            },
+        })
+    })
 });

@@ -1,14 +1,15 @@
-<?php get_header('', array('title'=>'ニュース・お知らせ')) ?>
+<?php get_header() ?>
 
 	<main class="p-news">
-		<div class="c-breadcrumb">
+		<!-- <div class="c-breadcrumb">
 			<div class="l-container">
 				<a href="index.html">Home</a>
 				<a href="news.html">ニュース・お知らせ</a>
 				<span>2018年12月12日 就職活動中の方向けに京都事務所で事務所見学会を開催します。</span>
 			</div>
-		</div>
-		
+		</div> -->
+		<?php get_breadcrumb() ?>
+
 		<div class="p-news__content">
 			<div class="l-container">
 				<?php if (have_posts()): ?>
