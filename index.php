@@ -105,7 +105,7 @@
                             <li class="c-gridpost__item">
                                 <a href="<?php the_permalink() ?>">
                                     <div class="c-gridpost__thumb">
-                                        <img src="<?php echo get_field('image')['url'] ?>" alt="">
+                                        <img src="<?php echo get_field('image')['url'] ?>" alt="<?php echo get_field('title') ?>">
                                     </div>
                                     <p class="datepost"><?php echo get_field('publication_date') ?></p>
                                     <h3><?php echo get_field('title') ?></h3>

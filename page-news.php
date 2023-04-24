@@ -1,4 +1,4 @@
-<?php get_header('', array('title' => 'ニュース・お知らせ')) ?>
+<?php get_header() ?>
 <?php
 $all_cats = get_categories(
     array(
