@@ -1,6 +1,5 @@
 <?php get_header() ?>
 
-
 <main class="p-contact">
 	<?php get_breadcrumb() ?>
 	<div class="c-headpage">
@@ -14,7 +13,7 @@
 			<?php echo do_shortcode('[mwform_formkey key="184"]') ?>
 		</div>
 		<div class="c-btn c-btn--small">
-			<a href="<?php echo esc_url(home_url()); ?>">TOPに戻る</a>
+			<a href="<?php echo esc_url(home_url('/news')) ?>">TOPに戻る</a>
 		</div>
 	</div>
 </main>

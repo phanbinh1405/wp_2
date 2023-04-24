@@ -190,9 +190,10 @@ add_filter('wp_title', 'theme_slug_filter_wp_title');
 
 function get_breadcrumb()
 {
+    global $post;
     echo '<div class="c-breadcrumb"><div class="l-container">';
     echo '<a href="' . home_url() . '" >Home</a>';
-    if(is_archive()) {
+    if (is_archive()) {
         $post_type = get_post_type();
         if ($post_type === 'service') {
             echo '<span>サービス一覧</span>';
@@ -209,38 +210,79 @@ function get_breadcrumb()
         if ($post_type === 'publish') {
             echo '<a href="' . get_post_type_archive_link('publish') . '" >出版物一覧</a>';
         }
-        if($post_type === 'post'){
-            echo '<a href="' . home_url('news') . '" >ニュース一覧</a>';
+        if ($post_type === 'post') {
+            echo '<a href="' . esc_url(home_url('news')) . '" >ニュース一覧</a>';
         }
-        echo '<span>'.get_the_title().'</span>';
-    } 
-    if(is_page('news')){
+        echo '<span>' . get_the_title() . '</span>';
+    }
+    if (is_page('news')) {
         echo '<span>ニュース一覧</span>';
-    } else if(is_page()){
-        echo '<span>'.'news'.'</span>';
+    } else if (is_page()) {
+        $anc = get_post_ancestors( $post->ID );
+        $anc = array_reverse($anc);
+        if ( !isset( $parents ) ) $parents = null;
+        foreach ( $anc as $ancestor ) {
+            $parents .= '<a href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a>';
+        }               
+        echo $parents;
+        echo '<span>' . get_the_title() . '</span>';
     }
 
-    if(is_category()) {
-        echo '<a href="' . home_url('news') . '" >ニュース一覧</a>';
-        echo '<span>'.wp_title('', false).'</span>';
+    if (is_category()) {
+        echo '<a href="' . esc_url(home_url('news')) . '" >ニュース一覧</a>';
+        echo '<span>' . wp_title('', false) . '</span>';
     }
-    
+
     echo '</div></div>';
 }
 
 // Filter Service Category By Ajax
 
-add_action( 'wp_ajax_filter_service_categories', 'filter_service_categories' );
-add_action( 'wp_ajax_nopriv_filter_service_categories', 'filter_service_categories' );
+add_action('wp_ajax_filter_service_categories', 'filter_service_categories');
+add_action('wp_ajax_nopriv_filter_service_categories', 'filter_service_categories');
 
-function filter_service_categories(){
-    ob_start(); 
+function filter_service_categories()
+{
+    ob_start();
     // logic get post
+    $input = $_REQUEST["input"];
+    $args = array(
+        'post_type' => 'service',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+    );
+    if ($input) {
+        $args['tax_query'] = array(
+            'relation' => 'or',
+            array(
+                'taxonomy' => 'service-category',
+                'terms' => $input
+            )
+        );
+    }
 
+    $category_query = new WP_Query($args);
 
-
-    $input = (isset($_POST['input']))?esc_attr($_POST['input']) : '';
-    // $result = ob_get_clean(); 
-    wp_send_json_success('Gửi thành công'); // trả về giá trị dạng json
+    if ($category_query->have_posts()) {
+        while ($category_query->have_posts()) {
+            $category_query->the_post();
+            echo '<li class="c-column__item">';
+            echo '<a href="' . get_the_permalink() . '">';
+            if (get_the_post_thumbnail_url()) {
+                echo    '<img src="' . get_the_post_thumbnail_url() . '" alt="">';
+            }
+            echo '<p>' . get_the_title() . '</p>';
+            echo    '</a></li>';
+        }
+    }
+    wp_reset_query();
+    $content = ob_get_contents();
+    ob_end_clean();
+    $result['type'] = "success";
+    $result['message'] = "Thanh cong";
+    $result['content'] = $content;
+    $result['count'] = $category_query->post_count;
+    $result = json_encode($result);
+    echo $result;
     die();
 }

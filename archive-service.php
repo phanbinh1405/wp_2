@@ -66,14 +66,14 @@ $titlepage = get_post_type_object('service');
 			$args = [
 				'post_type' => 'service',
 				'post_status' => 'publish',
-				'posts_per_page' => 12,
+				'posts_per_page' => -1,
 				'paged' => 1,
 			];
 			$query = new WP_Query($args);
 			?>
-			<p class="p-service__result"><?php echo $total_services_post ?>件が該当しました</p>
+			<p class="p-service__result is-ajaxServicesCount"><?php echo $total_services_post ?>件が該当しました</p>
 
-			<ul class="c-column">
+			<ul class="c-column is-ajaxServicesPosts">
 				<?php if ($query->have_posts()) : ?>
 					<?php while ($query->have_posts()) : $query->the_post() ?>
 						<li class="c-column__item">

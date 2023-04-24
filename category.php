@@ -1,39 +1,23 @@
 <?php
 $cate = get_queried_object();
 get_header();
-
+global $wp_query;
 $big = 999999999;
-$paged = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
-
-$query_args = array(
-    'post_type' => 'post',
-    'post_status' => 'publish',
-    'cat' => $cate->term_id,
-    'paged' =>  $paged
-);
-
-$query = new WP_Query($query_args);
-$total_pages = $query->max_num_pages;
+$total_pages = $wp_query->max_num_pages;
 
 $pagination_args = array(
     "prev_text" => __(''),
     "base" => str_replace($big, "%#%", esc_url(get_pagenum_link($big))),
     "format" => "?paged=%#%",
-    "current" => $paged,
-    "total" => $total_pages,
+    'current' => max( 1, get_query_var('paged') ),
+    'total' => $total_pages,
     "next_text" => __(''),
     "mid_size" => 6
 );
 ?>
 
 <main class="p-news">
-    <!-- <div class="c-breadcrumb">
-        <div class="l-container">
-            <a href="index.html">Home</a>
-            <a href="news.html">ニュース・お知らせ</a>
-            <span>お知らせ</span>
-        </div>
-    </div> -->
+
     <?php get_breadcrumb() ?>
 
     <div class="c-headpage">
@@ -42,8 +26,8 @@ $pagination_args = array(
     <div class="p-news__content">
         <div class="l-container">
             <ul class="c-listpost" id="cat_1">
-                <?php if ($query->have_posts()) : ?>
-                    <?php while ($query->have_posts()) : $query->the_post() ?>
+                <?php if (have_posts()) : ?>
+                    <?php while (have_posts()) : the_post() ?>
                         <li class="c-listpost__item">
                             <div class="c-listpost__info">
                                 <span class="datepost"><?php echo get_the_date('Y年m月d日') ?></span>

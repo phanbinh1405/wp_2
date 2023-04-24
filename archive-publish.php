@@ -10,7 +10,6 @@
         <div class="p-publish__content">
             <ul class="c-gridpost">
                 <?php
-                global $wp_query;
                 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
                 $args = [
                     'post_type' => 'publish',
